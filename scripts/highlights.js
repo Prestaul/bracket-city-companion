@@ -39,6 +39,10 @@ document.adoptedStyleSheets = [
 // DOM //////////////////////////////////////////////////////////////////////
 
 function updateHighlights() {
+  for (let blank of document.querySelectorAll('.blank-line') ?? []) {
+    blank.replaceWith(document.createTextNode('___'));
+  }
+                             
   let puzzle = document.querySelector('.puzzle-display');
   let walker = document.createTreeWalker(puzzle, NodeFilter.SHOW_TEXT);
   let ranges = [];
