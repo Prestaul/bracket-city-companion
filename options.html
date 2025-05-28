@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Bracket City Companion Options</title>
+  </head>
+  <body>
+    <form id="optionsForm">
+      <div>
+        <label>
+          <input type="checkbox" id="showIdsInput" />
+          Insert ids
+        </label>
+      </div>
+
+      <div>
+        <label>
+          <input type="checkbox" id="showHighlightsInput" />
+          Insert highlights
+        </label>
+      </div>
+
+      <div style="display: flex; gap: 20px">
+        <button id="saveButton" type="submit">Save</button>
+        <div id="statusOutput" style="color:green"></div>
+      </div>
+    </form>
+
+    <script src="scripts/options.js"></script>
+  </body>
+</html>

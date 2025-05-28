@@ -1,28 +1,21 @@
 {
   "manifest_version": 3,
   "name": "Bracket City Companion",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Enhance The Atlantic's \"Bracket City\" game with ids and unique colors for each clue.",
+  "permissions": ["storage"],
   "content_scripts": [
     {
-      "js": [
-        "scripts/ids.js",
-        "scripts/highlights.js"
-      ],
-      "matches": [
-        "https://www.theatlantic.com/games/bracket-city/*"
-      ],
+      "css": ["styles/mobile.css"],
+      "js": ["scripts/main.js"],
+      "matches": ["https://www.theatlantic.com/games/bracket-city/*"],
       "run_at": "document_idle"
     }
   ],
   "web_accessible_resources": [
     {
-      "resources": [
-        "styles/*.css"
-      ],
-      "matches": [
-        "https://www.theatlantic.com/*"
-      ]
+      "resources": ["styles/*.css", "scripts/*.js", "images/*.png"],
+      "matches": ["https://www.theatlantic.com/*"]
     }
   ],
   "icons": {
@@ -30,5 +23,9 @@
     "32": "images/icon-32.png",
     "64": "images/icon-64.png",
     "128": "images/icon-128.png"
+  },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": false
   }
 }
