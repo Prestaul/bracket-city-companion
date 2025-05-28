@@ -40,7 +40,10 @@ document.adoptedStyleSheets = [
 
 function updateHighlights() {
   for (let blank of document.querySelectorAll('.blank-line') ?? []) {
-    blank.replaceWith(document.createTextNode('___'));
+    let width = Math.round(parseFloat(blank.style.width) / 0.6);
+    let underscores = '_'.repeat(width || 1);
+    
+    blank.replaceWith(document.createTextNode(underscores));
   }
                              
   let puzzle = document.querySelector('.puzzle-display');
