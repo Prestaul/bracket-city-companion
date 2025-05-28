@@ -40,6 +40,14 @@ document.adoptedStyleSheets = [
 
 function updateHighlights() {
   let puzzle = document.querySelector('.puzzle-display');
+
+  if (!puzzle) return;
+
+  for (let blank of puzzle.querySelectorAll('.blank-line')) {
+    let width = Math.round(parseFloat(blank.style.width) / 0.6) || 1;
+    blank.replaceWith('_'.repeat(width));
+  }
+
   let walker = document.createTreeWalker(puzzle, NodeFilter.SHOW_TEXT);
   let ranges = [];
   let highlights = [];
