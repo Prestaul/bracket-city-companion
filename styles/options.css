@@ -45,7 +45,6 @@ label {
   counter-increment: options;
   display: inline-flex;
   align-items: center;
-  gap: 0.25em;
   padding: 0.25ch;
   border-radius: 0.25em;
   text-transform: lowercase;
@@ -53,7 +52,7 @@ label {
   &::before {
     content: '[';
     display: block;
-    width: 3.5ch;
+    width: 4.5ch;
     text-align: end;
   }
 
@@ -67,7 +66,7 @@ label {
   }
 
   :has(#showIdsInput:checked) &::before {
-    content: counter(options) ' [';
+    content: counter(options, decimal-leading-zero) ' [';
   }
 
   :has(#showHighlightsInput:checked) & {
@@ -85,6 +84,7 @@ input[type="checkbox"] {
   appearance: none;
   display: grid;
   place-content: center;
+  margin-inline-end: 1ch;
   aspect-ratio: 1 / 1;
   width: 1em;
   border-block-end: 1px solid;
@@ -100,15 +100,14 @@ input[type="checkbox"] {
 
 footer {
   display: flex;
-  gap: 1ch;
+  gap: 2ch;
   align-items: baseline;
 }
 
 button {
   display: flex;
   align-items: center;
-  gap: 0.25em;
-  padding: 0.5em;
+  padding: 1ch;
   background-color: var(--bcc-color-5);
   border-radius: 0.25em;
   cursor: pointer;
