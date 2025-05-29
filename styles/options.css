@@ -10,12 +10,13 @@
   color-scheme: light dark;
 }
 
-* {
+*, *::before, *::after {
   box-sizing: border-box;
   margin: unset;
   padding: unset;
-  background: unset;
   border: unset;
+  outline: unset;
+  background: unset;
   color: inherit;
   font: inherit;
 }
@@ -23,7 +24,7 @@
 body {
   background-color: canvas;
   color: canvastext;
-  font: normal 14px/1 ui-monospace, monospace;
+  font: normal 1rem/1 ui-monospace, monospace;
 }
 
 form {
@@ -46,10 +47,15 @@ label {
   display: inline-flex;
   align-items: center;
   padding: 0.25ch;
-  border-radius: 0.25em;
+  border-radius: 0.25ch;
   cursor: pointer;
   text-transform: lowercase;
   user-select: none;
+
+  &:has(:focus-visible) {
+    outline: 3px solid;
+    outline-offset: 2px;
+  }
 
   &::before {
     content: '[';
@@ -102,21 +108,31 @@ footer {
 }
 
 button {
-  display: flex;
-  align-items: center;
-  padding: 1ch;
-  background-color: var(--bcc-color-5);
-  border-radius: 0.25em;
+  position: relative;
+  display: grid;
+  place-content: center;
+  padding: 1ch 2ch;
+  border-radius: 0.25ch;
   cursor: pointer;
-  user-select: none;
   text-transform: lowercase;
+  user-select: none;
 
-  &::before {
-    content: '[';
+  &:hover,
+  &:focus-visible {
+    background-color: var(--bcc-color-5);
   }
 
-  &::after {
-    content: ']';
+  &:focus-visible {
+    outline: 3px solid;
+    outline-offset: 2px;
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 2px solid;
+    clip-path: polygon(0 0, 6px 0, 6px 100%, calc(100% - 6px) 100%, calc(100% - 6px) 0, 100% 0, 100% 100%, 0 100%, 0 0);
   }
 }
 
