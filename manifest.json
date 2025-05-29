@@ -6,7 +6,7 @@
   "permissions": ["storage"],
   "content_scripts": [
     {
-      "css": ["styles/mobile.css"],
+      "css": ["styles/main.css"],
       "js": ["scripts/main.js"],
       "matches": ["https://www.theatlantic.com/games/bracket-city/*"],
       "run_at": "document_idle"

@@ -1,0 +1,94 @@
+.puzzle-container {
+  --bcc-color-0: oklch(1 0.1 0);
+  --bcc-color-1: oklch(1 0.1 50);
+  --bcc-color-2: oklch(1 0.1 100);
+  --bcc-color-3: oklch(1 0.1 150);
+  --bcc-color-4: oklch(1 0.1 200);
+  --bcc-color-5: oklch(1 0.1 250);
+  --bcc-color-6: oklch(1 0.1 300);
+}
+
+.bracket-city-dark-mode .puzzle-container {
+  --bcc-color-0: oklch(0.4 0.1 0);
+  --bcc-color-1: oklch(0.4 0.1 50);
+  --bcc-color-2: oklch(0.4 0.1 100);
+  --bcc-color-3: oklch(0.4 0.1 150);
+  --bcc-color-4: oklch(0.4 0.1 200);
+  --bcc-color-5: oklch(0.4 0.1 250);
+  --bcc-color-6: oklch(0.4 0.1 300);
+}
+
+::highlight(bcc-0),
+::highlight(bcc-7),
+::highlight(bcc-14) {
+  background-color: var(--bcc-color-0);
+}
+
+::highlight(bcc-1),
+::highlight(bcc-8),
+::highlight(bcc-15) {
+  background-color: var(--bcc-color-1);
+}
+
+::highlight(bcc-2),
+::highlight(bcc-9),
+::highlight(bcc-16) {
+  background-color: var(--bcc-color-2);
+}
+
+::highlight(bcc-3),
+::highlight(bcc-10),
+::highlight(bcc-17) {
+  background-color: var(--bcc-color-3);
+}
+
+::highlight(bcc-4),
+::highlight(bcc-11),
+::highlight(bcc-18) {
+  background-color: var(--bcc-color-4);
+}
+
+::highlight(bcc-5),
+::highlight(bcc-12),
+::highlight(bcc-19) {
+  background-color: var(--bcc-color-5);
+}
+
+::highlight(bcc-6),
+::highlight(bcc-13),
+::highlight(bcc-20) {
+  background-color: var(--bcc-color-6);
+}
+
+.active-clue {
+  outline: 2px solid color-mix(in srgb, transparent, currentcolor 40%);
+  outline-offset: -3px;
+}
+
+.solved {
+  outline: 4px dashed color-mix(in srgb, transparent, currentcolor 40%);
+  outline-offset: -4px;
+}
+
+@media (max-width: 640px) {
+  .puzzle-container {
+    position: revert !important;
+    display: revert !important;
+    overflow: auto !important;
+    padding-block-end: 350px !important;
+  }
+
+  .puzzle-content {
+    position: revert !important;
+    display: revert !important;
+  }
+
+  .puzzle-display-mobile {
+    padding-bottom: 1rem !important;
+    min-height: revert !important;
+  }
+
+  .solved-expressions {
+    display: revert !important;
+  }
+}
