@@ -53,7 +53,7 @@ label {
   &::before {
     content: '[';
     display: block;
-    width: 4.5ch;
+    width: 3.5ch;
     text-align: end;
   }
 
@@ -67,7 +67,7 @@ label {
   }
 
   :has(#showIdsInput:checked) &::before {
-    content: counter(options) '. [';
+    content: counter(options) ' [';
   }
 
   :has(#showHighlightsInput:checked) & {
