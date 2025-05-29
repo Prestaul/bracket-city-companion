@@ -7,20 +7,22 @@
   </head>
   <body>
     <form id="optionsForm">
-      <label>
-        <input type="checkbox" id="showIdsInput" />
-        Insert ids
-      </label>
+      <fieldset>
+        <label>
+          <input type="checkbox" id="showIdsInput" />
+          Insert ids
+        </label>
 
-      <label>
-        <input type="checkbox" id="showHighlightsInput" />
-        Insert highlights
-      </label>
+        <label>
+          <input type="checkbox" id="showHighlightsInput" />
+          Insert highlights
+        </label>
+      </fieldset>
 
-      <div style="display: flex; gap: 20px">
+      <footer>
         <button id="saveButton" type="submit">Save</button>
-        <div id="statusOutput" style="color:green"></div>
-      </div>
+        <output id="statusOutput"></output>
+      </footer>
     </form>
 
     <script src="scripts/options.js"></script>
