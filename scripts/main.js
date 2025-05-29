@@ -48,7 +48,7 @@ function getRawPuzzleText() {
 
   return JSON.parse(
     localStorage.getItem(`bracketPuzzle_${puzzleDate}`) || '{}'
-  )?.initialPuzzle.trim();
+  )?.initialPuzzle?.trim() || '';
 }
 
 // PUZZLE OBSERVERS ///////////////////////////////////////////////////////////
@@ -124,7 +124,7 @@ function insertIds() {
 
   console.debug(`BCC inserting ids... (${expressions.length} expressions)`);
 
-  for (let i = expressions.length; i--; ) {
+  for (let i = expressions.length; i--;) {
     const el = expressions[i];
     const expression = el.querySelector('.expression')?.textContent.trim();
     const solution = el.querySelector('.solution')?.textContent.trim();
@@ -140,44 +140,6 @@ function insertIds() {
 
   console.debug('BCC ids inserted.');
 }
-
-// HIGHLIGHTS CSS /////////////////////////////////////////////////////////////
-
-const sheet = new CSSStyleSheet();
-let maxDepth = -1;
-
-function createHighlight(id, depth) {
-  if (depth <= maxDepth) return;
-
-  maxDepth = depth;
-
-  sheet.insertRule(`
-    ::highlight(${id}) {
-      background-color: oklch(1 0.1 ${50 * depth});
-    }
-  `);
-  sheet.insertRule(`
-    .bracket-city-dark-mode ::highlight(${id}) {
-      background-color: oklch(0.4 0.1 ${50 * depth});
-    }
-  `);
-}
-
-sheet.replace(`
-  .active-clue {
-    outline: 2px solid color-mix(in srgb, transparent, currentcolor 40%);
-    outline-offset: -3px;
-  }
-  .solved {
-    outline: 4px dashed color-mix(in srgb, transparent, currentcolor 40%);
-    outline-offset: -4px;
-  }
-`);
-
-document.adoptedStyleSheets = [
-  ...document.adoptedStyleSheets,
-  sheet,
-];
 
 // HIGHLIGHTS DOM /////////////////////////////////////////////////////////////
 
@@ -223,8 +185,7 @@ function updateHighlights() {
   }
 
   for (let i = 0; i < highlights.length; i++) {
-    const id = `brackets-${i}`;
-    createHighlight(id, i);
+    const id = `bcc-${i}`;
     CSS.highlights.delete(id);
     CSS.highlights.set(id, highlights[i]);
   }

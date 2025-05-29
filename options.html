@@ -2,30 +2,27 @@
 <html>
   <head>
     <title>Bracket City Companion Options</title>
-    <style>
-      @import './styles/options.css';
-    </style>
+
+    <link rel="stylesheet" href="styles/options.css" />
   </head>
   <body>
     <form id="optionsForm">
-      <div>
+      <fieldset>
         <label>
           <input type="checkbox" id="showIdsInput" />
           Insert ids
         </label>
-      </div>
 
-      <div>
         <label>
           <input type="checkbox" id="showHighlightsInput" />
           Insert highlights
         </label>
-      </div>
+      </fieldset>
 
-      <div style="display: flex; gap: 20px">
+      <footer>
         <button id="saveButton" type="submit">Save</button>
-        <div id="statusOutput" style="color:green"></div>
-      </div>
+        <output id="statusOutput"></output>
+      </footer>
     </form>
 
     <script src="scripts/options.js"></script>
