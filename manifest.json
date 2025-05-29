@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Bracket City Companion",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "Enhance The Atlantic's \"Bracket City\" game with ids and unique colors for each clue.",
   "permissions": ["storage"],
   "content_scripts": [
