@@ -18,13 +18,12 @@
   border: unset;
   color: inherit;
   font: inherit;
-  outline: unset;
 }
 
 body {
   background-color: canvas;
   color: canvastext;
-  font: normal 16px/1 ui-sans-serif, system-ui, sans-serif;
+  font: normal 14px/1 ui-monospace, monospace;
 }
 
 form {
