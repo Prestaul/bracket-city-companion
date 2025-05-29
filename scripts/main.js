@@ -48,7 +48,7 @@ function getRawPuzzleText() {
 
   return JSON.parse(
     localStorage.getItem(`bracketPuzzle_${puzzleDate}`) || '{}'
-  )?.initialPuzzle.trim();
+  )?.initialPuzzle?.trim() || '';
 }
 
 // PUZZLE OBSERVERS ///////////////////////////////////////////////////////////

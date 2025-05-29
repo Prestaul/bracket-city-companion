@@ -47,7 +47,9 @@ label {
   align-items: center;
   padding: 0.25ch;
   border-radius: 0.25em;
+  cursor: pointer;
   text-transform: lowercase;
+  user-select: none;
 
   &::before {
     content: '[';
@@ -58,11 +60,6 @@ label {
 
   &::after {
     content: ']';
-  }
-
-  &:has([type="checkbox"]) {
-    cursor: pointer;
-    user-select: none;
   }
 
   :has(#showIdsInput:checked) &::before {
