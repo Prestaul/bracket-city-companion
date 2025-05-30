@@ -13,10 +13,8 @@ const onSubmit = (e) => {
     { options },
     () => {
       // Update status to let user know options were saved.
-      // const status = document.getElementById('status');
-      statusOutput.textContent = 'Options saved.';
+      statusOutput.style.display = 'block';
       setTimeout(() => {
-        statusOutput.textContent = '';
         window.close();
       }, 750);
     }

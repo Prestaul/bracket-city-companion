@@ -9,19 +9,23 @@
     <form id="optionsForm">
       <fieldset>
         <label>
-          <input type="checkbox" id="showIdsInput" />
-          Insert ids
+          <div class="bracketed">
+            <input type="checkbox" id="showIdsInput" />
+            Insert ids
+          </div>
         </label>
 
         <label>
-          <input type="checkbox" id="showHighlightsInput" />
-          Insert highlights
+          <div class="bracketed">
+            <input type="checkbox" id="showHighlightsInput" />
+            Insert highlights
+          </div>
         </label>
       </fieldset>
 
       <footer>
         <button id="saveButton" type="submit">Save</button>
-        <output id="statusOutput"></output>
+        <output id="statusOutput">Options saved.</output>
       </footer>
     </form>
 
