@@ -52,24 +52,25 @@ label {
   text-transform: lowercase;
   user-select: none;
 
+  transition: background-color 0.2s ease-in-out;
+
   &:has(:focus-visible) {
     outline: 3px solid;
     outline-offset: 2px;
   }
 
   &::before {
-    content: '[';
+    content: counter(options, decimal-leading-zero);
     display: block;
-    width: 4.5ch;
-    text-align: end;
-  }
+    width: 4ch;
+    text-align: center;
+    opacity: 0;
 
-  &::after {
-    content: ']';
+    transition: opacity 0.2s ease-in-out;
   }
 
   :has(#showIdsInput:checked) &::before {
-    content: counter(options, decimal-leading-zero) ' [';
+    opacity: 1;
   }
 
   :has(#showHighlightsInput:checked) & {
@@ -82,6 +83,25 @@ label {
     }
   }
 }
+
+.bracketed {
+  display: contents;
+
+  &::before {
+    content: '[';
+    display: block;
+    width: 2ch;
+    text-align: start;
+  }
+
+  &::after {
+    content: ']';
+    display: block;
+    width: 2ch;
+    text-align: end;
+  }
+}
+
 
 input[type="checkbox"] {
   appearance: none;
@@ -107,6 +127,12 @@ footer {
   align-items: baseline;
 }
 
+@property --bracket-width {
+  syntax: '<percentage>';
+  inherits: true;
+  initial-value: 8%;
+}
+
 button {
   position: relative;
   display: grid;
@@ -117,8 +143,12 @@ button {
   text-transform: lowercase;
   user-select: none;
 
+  transition: --bracket-width 0.2s ease-in-out, background-color 0.4s ease-in-out;
+
   &:hover,
   &:focus-visible {
+    --bracket-width: 50%;
+
     background-color: var(--bcc-color-5);
   }
 
@@ -132,10 +162,18 @@ button {
     position: absolute;
     inset: 0;
     border: 2px solid;
-    clip-path: polygon(0 0, 6px 0, 6px 100%, calc(100% - 6px) 100%, calc(100% - 6px) 0, 100% 0, 100% 100%, 0 100%, 0 0);
+    clip-path: polygon(0 0, var(--bracket-width) 0, var(--bracket-width) 100%, calc(100% - var(--bracket-width)) 100%, calc(100% - var(--bracket-width)) 0, 100% 0, 100% 100%, 0 100%, 0 0);
   }
 }
 
 output {
+  display: none;
   color: color-mix(in srgb, currentcolor, var(--bcc-color-3) 30%);
+  opacity: 1;
+
+  transition: opacity 0.2s ease-in-out;
+
+  @starting-style {
+    opacity: 0;
+  }
 }
