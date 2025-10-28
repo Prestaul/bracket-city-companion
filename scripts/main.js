@@ -1,6 +1,10 @@
+const INITIAL_RETRIES = 10;
+
 let options = {};
 let puzzleDate = null;
 let puzzleCache = new Map();
+let retriesRemaining = INITIAL_RETRIES;
+let playButtonClicked = false;
 
 console.debug('Bracket City Companion (BCC) plugin initializing...');
 initPlugin();
@@ -9,9 +13,25 @@ async function initPlugin() {
   const containerEl = document.querySelector('.puzzle-container')?.parentElement;
   const displayEl = document.querySelector('.puzzle-display')?.parentElement;
 
-  if (!containerEl || !displayEl) {
-    console.debug('BCC waiting for puzzle...');
-    return setTimeout(initPlugin, 500);
+  if (!containerEl || !displayEl || !updatePuzzleDate() || !getRawPuzzleText()) {
+    const playButton = document.querySelector('button[data-event-element="play button"]');
+    if (playButton && !playButtonClicked) {
+      console.debug('BCC detected play button, waiting for user to start puzzle...');
+      playButton.addEventListener('click', () => {
+        retriesRemaining = INITIAL_RETRIES;
+        playButtonClicked = true;
+        initPlugin();
+      });
+    } else {
+      console.debug('BCC waiting for puzzle...');
+      if (--retriesRemaining > 0) {
+        setTimeout(initPlugin, 500);
+      } else {
+        console.debug('BCC failed to find puzzle after multiple attempts.');
+      }
+    }
+
+    return;
   }
 
   let cleanup = await initPuzzle();
@@ -33,6 +53,7 @@ async function getOptions() {
       (data) => resolve({
         showIds: data?.options?.showIds ?? true,
         showHighlights: data?.options?.showHighlights ?? true,
+        showWrongGuesses: data?.options?.showWrongGuesses ?? true,
       })
     );
   });
@@ -43,12 +64,20 @@ function updatePuzzleDate() {
   puzzleDate = dateText ? new Date(dateText).toISOString().substring(0, 10) : null;
 }
 
-function getRawPuzzleText() {
-  console.debug('BCC reading puzzle...');
+function getRawPuzzleData() {
+  console.debug(`BCC reading puzzle (${puzzleDate})...`);
 
   return JSON.parse(
     localStorage.getItem(`bracketPuzzle_${puzzleDate}`) || '{}'
-  )?.initialPuzzle?.trim() || '';
+  );
+}
+
+function getRawPuzzleText() {
+  return getRawPuzzleData()?.initialPuzzle?.trim() || '';
+}
+
+function getWrongGuesses() {
+  return getRawPuzzleData()?.wrongGuessList || [];
 }
 
 // PUZZLE OBSERVERS ///////////////////////////////////////////////////////////
@@ -63,26 +92,27 @@ async function initPuzzle() {
 
   console.debug(`BCC puzzle (${puzzleDate}) initializing...`);
 
-  const { showIds, showHighlights } = await getOptions();
+  const { showIds, showHighlights, showWrongGuesses } = await getOptions();
   let solutionObserver, puzzleObserver;
 
   if (showHighlights) {
     updateHighlights();
 
-    puzzleObserver = new MutationObserver(([mutation]) => {
-      // Reinsert highlights when the puzzle display rerenders
-      updateHighlights();
-    });
+    // Reinsert highlights when the puzzle display rerenders
+    puzzleObserver = new MutationObserver(updateHighlights);
     puzzleObserver.observe(document.querySelector('.puzzle-display'), { childList: true });
   }
 
-  if (showIds) {
-    insertIds();
+  if (showIds) insertIds();
+  if (showWrongGuesses) insertWrongGuesses();
 
+  if (showIds || showWrongGuesses) {
     solutionObserver = new MutationObserver(([mutation]) => {
       // Reinsert ids when the expression list rerenders
-      if (Array.from(mutation.addedNodes).some(el => el.matches?.('.expression-item')))
-        insertIds();
+      if (Array.from(mutation.addedNodes).some(el => el.matches?.('.expression-item'))) {
+        if (showIds) insertIds();
+        if (showWrongGuesses) insertWrongGuesses();
+      }
     });
     solutionObserver.observe(document.querySelector('.expressions-list'), { childList: true });
   }
@@ -106,7 +136,10 @@ function getPuzzleWithIds() {
   }
 
   const rawText = getRawPuzzleText();
-  if (!rawText) throw new Error('Unable to locate the puzzle text');
+  if (!rawText) {
+    console.debug('BCC unable to locate the puzzle text.');
+    return null;
+  }
 
   let i = 0;
   const text = rawText.trim().replaceAll('[', () => (++i + '[').padStart(3, '0'));
@@ -120,6 +153,8 @@ function getPuzzleWithIds() {
 
 function insertIds() {
   let puzzleWithIds = getPuzzleWithIds();
+  if (!puzzleWithIds) throw new Error('BCC attempting to insert ids without a valid puzzle.');
+
   const expressions = document.querySelectorAll('.expression-item');
 
   console.debug(`BCC inserting ids... (${expressions.length} expressions)`);
@@ -139,6 +174,30 @@ function insertIds() {
   }
 
   console.debug('BCC ids inserted.');
+}
+
+// WRONG GUESSES DOM //////////////////////////////////////////////////////////
+
+function insertWrongGuesses() {
+  const existingEl = document.getElementById('bcc-wrong-guesses');
+  if (existingEl) existingEl.remove();
+
+  const answersHeader = document.querySelector('.solved-expressions > h3');
+  if (!answersHeader) return;
+
+  const wrongGuesses = getWrongGuesses();
+  if (wrongGuesses.length === 0) return;
+
+  console.debug('BCC inserting wrong guesses...', { wrongGuesses });
+
+  const el = document.createElement('div');
+  el.id = 'bcc-wrong-guesses';
+  el.style.fontFamily = 'var(--mono-font)';
+  el.style.fontSize = '18px';
+  el.style.marginTop = '1rem';
+  el.innerHTML = `<strong>Wrong Guesses:</strong> ${wrongGuesses.join(', ')}`;
+
+  answersHeader.insertAdjacentElement('beforebegin', el);
 }
 
 // HIGHLIGHTS DOM /////////////////////////////////////////////////////////////

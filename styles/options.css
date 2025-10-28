@@ -81,6 +81,10 @@ label {
     &:nth-child(2) {
       background-color: var(--bcc-color-3);
     }
+
+    &:nth-child(3) {
+      background-color: var(--bcc-color-5);
+    }
   }
 }
 
