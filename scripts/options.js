@@ -5,6 +5,7 @@ const onSubmit = (e) => {
   const options = {
     showIds: showIdsInput.checked,
     showHighlights: showHighlightsInput.checked,
+    showWrongGuesses: showWrongGuessesInput.checked,
   };
 
   saveButton.disabled = true;
@@ -29,6 +30,7 @@ const restoreOptions = () => {
     (data) => {
       showIdsInput.checked = data?.options?.showIds ?? true;
       showHighlightsInput.checked = data?.options?.showHighlights ?? true;
+      showWrongGuessesInput.checked = data?.options?.showWrongGuesses ?? true;
     }
   );
 };
